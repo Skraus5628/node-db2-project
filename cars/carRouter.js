@@ -36,4 +36,25 @@ router.post("/", async (req, res, next) =>{
     }
 })
 
+router.put("/:id", async (req, res, neext) =>{
+    try{
+        const carData = req.body
+        
+        await db("cars").where("id", req.params.id).update(carData)
+        const car = await db("cars").where("id", req.params.id).first()
+
+        res.json(car)
+    } catch(err){
+        next(err)
+    }
+})
+
+router.delete("/:id", async (req, res, next) =>{
+    try{
+        await db("cars").where("id", req.params.id).del()
+        res.status(204).end()
+    } catch(err){
+        next(err)
+    }
+});
 module.exports = router
